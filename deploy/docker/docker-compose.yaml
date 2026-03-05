@@ -152,10 +152,18 @@ services:
       - SIGNOZ_OTEL_COLLECTOR_CLICKHOUSE_REPLICATION=true
       - SIGNOZ_OTEL_COLLECTOR_TIMEOUT=10m
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_ENDPOINT=${POSTGRES_ENDPOINT}
+      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       # - "1777:1777"     # pprof extension
       - "4317:4317" # OTLP gRPC receiver
       - "4318:4318" # OTLP HTTP receiver
+    networks:
+      - signoz-net
+      - dokploy-network
   signoz-telemetrystore-migrator:
     !!merge <<: *db-depend
     image: signoz/signoz-otel-collector:${OTELCOL_TAG:-v0.144.2}
@@ -177,6 +185,8 @@ services:
 networks:
   signoz-net:
     name: signoz-net
+  dokploy-network:
+    external: true
 volumes:
   clickhouse:
     name: signoz-clickhouse
