@@ -151,6 +151,7 @@ services:
       - SIGNOZ_OTEL_COLLECTOR_CLICKHOUSE_CLUSTER=cluster
       - SIGNOZ_OTEL_COLLECTOR_CLICKHOUSE_REPLICATION=true
       - SIGNOZ_OTEL_COLLECTOR_TIMEOUT=10m
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       # - "1777:1777"     # pprof extension
       - "4317:4317" # OTLP gRPC receiver
